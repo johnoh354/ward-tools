@@ -50,7 +50,3 @@
 ## 실행
 
 각 도구의 `index.html`을 브라우저로 열면 됩니다. 설치가 필요 없습니다.
-
-## 만든 사람
-
-오종효 (Oh JongHyo) · 다른 프로젝트: [NurPT](https://github.com/johnoh354/NurPT)
