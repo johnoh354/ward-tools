@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>오종효의 병동 도구</title>
+  <meta name="description" content="신경계 중환자실 간호사가 병동에서 직접 만들어 쓰는 도구 3가지의 비식별화 데모">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='14' fill='%230e6d7e'/%3E%3Cg fill='%23fff'%3E%3Crect x='14' y='16' width='10' height='8' rx='2'/%3E%3Crect x='27' y='16' width='10' height='8' rx='2'/%3E%3Crect x='40' y='16' width='10' height='8' rx='2'/%3E%3Crect x='14' y='28' width='10' height='8' rx='2'/%3E%3Crect x='27' y='28' width='10' height='8' rx='2' opacity='.45'/%3E%3Crect x='40' y='28' width='10' height='8' rx='2'/%3E%3Crect x='14' y='40' width='10' height='8' rx='2'/%3E%3Crect x='27' y='40' width='10' height='8' rx='2'/%3E%3Crect x='40' y='40' width='10' height='8' rx='2'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    :root {
+      --paper: #f5f9fa;
+      --sheet: #ffffff;
+      --ink: #123a46;
+      --ink-soft: #4a6570;
+      --rule: #d5e1e5;
+      --rule-strong: #b4c7cd;
+      --teal: #0e6d7e;
+      --teal-soft: #e3f0f2;
+      --y-bg: #ddf2e4; --y-fg: #136c3a;
+      --n-bg: #fde3e1; --n-fg: #b02a20;
+      --na-bg: #e9ecee; --na-fg: #5a6a72;
+      --note-bg: #fff7e8; --note-rule: #f1d7a8; --note-ink: #7a4b00;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #0e1a1e;
+        --sheet: #13242a;
+        --ink: #e2edf0;
+        --ink-soft: #9db4bc;
+        --rule: #24404a;
+        --rule-strong: #35596a;
+        --teal: #5bb8c7;
+        --teal-soft: #173a42;
+        --y-bg: #17402a; --y-fg: #8ee0ae;
+        --n-bg: #4a1f1c; --n-fg: #ffb3ab;
+        --na-bg: #23343a; --na-fg: #a9bcc3;
+        --note-bg: #33270f; --note-rule: #5e4517; --note-ink: #f3d79f;
+        color-scheme: dark;
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+    a { color: var(--teal); text-underline-offset: 3px; }
+    a:focus-visible, .open:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 6px; }
+    .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
+
+    /* hero */
+    .hero { padding: 72px 0 56px; border-bottom: 1px solid var(--rule); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+    .who { margin: 0 0 18px; font-size: 15px; color: var(--ink-soft); font-weight: 600; }
+    h1 {
+      margin: 0 0 22px;
+      font-size: clamp(34px, 5.2vw, 56px);
+      line-height: 1.18;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+    }
+    .lead { margin: 0 0 14px; max-width: 34em; font-size: 18px; }
+    .sub { margin: 0; max-width: 36em; color: var(--ink-soft); font-size: 16px; }
+
+    /* signature: a small flowsheet */
+    .flowsheet {
+      margin: 0;
+      background: var(--sheet);
+      border: 1px solid var(--rule-strong);
+      border-radius: 14px;
+      padding: 18px 18px 14px;
+    }
+    .flowsheet table { width: 100%; border-collapse: separate; border-spacing: 6px; table-layout: fixed; }
+    .flowsheet col.label { width: 40%; }
+    .flowsheet th { font-size: 13px; font-weight: 700; color: var(--ink-soft); padding: 0 0 2px; }
+    .flowsheet th.row { text-align: left; font-size: 15px; color: var(--ink); white-space: nowrap; padding-right: 6px; }
+    .flowsheet td {
+      height: 40px; text-align: center; border-radius: 8px;
+      font-weight: 800; font-size: 14px;
+    }
+    .flowsheet .Y { background: var(--y-bg); color: var(--y-fg); }
+    .flowsheet .N { background: var(--n-bg); color: var(--n-fg); }
+    .flowsheet .NA { background: var(--na-bg); color: var(--na-fg); }
+    .flowsheet figcaption { margin: 8px 6px 0; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+    /* tools */
+    .tool { padding: 64px 0; border-bottom: 1px solid var(--rule); }
+    .tool-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); gap: 48px; align-items: start; }
+    .tool h2 { margin: 0 0 6px; font-size: 30px; line-height: 1.3; font-weight: 800; letter-spacing: -0.025em; }
+    .tool .role { margin: 0 0 26px; color: var(--ink-soft); font-size: 16px; }
+    .facts { margin: 0 0 28px; }
+    .facts dt { font-size: 14px; font-weight: 800; color: var(--teal); margin-top: 16px; }
+    .facts dt:first-child { margin-top: 0; }
+    .facts dd { margin: 2px 0 0; }
+    .open {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--paper);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 11px 20px;
+      border-radius: 10px;
+    }
+    .open:hover { filter: brightness(1.08); }
+    .demo-data { margin: 12px 0 0; font-size: 14px; color: var(--ink-soft); }
+    .shot {
+      margin: 0;
+      background: var(--sheet);
+      border: 1px solid var(--rule-strong);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .shot img { display: block; width: 100%; height: auto; }
+
+    /* principles */
+    .principles { padding: 64px 0; border-bottom: 1px solid var(--rule); }
+    .principles h2, .privacy h2 { margin: 0 0 24px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+    .principles dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 48px; margin: 0; }
+    .principles dt { font-weight: 800; }
+    .principles dd { margin: 4px 0 0; color: var(--ink-soft); }
+
+    .privacy { padding: 56px 0; }
+    .note {
+      background: var(--note-bg);
+      border: 1px solid var(--note-rule);
+      color: var(--note-ink);
+      border-radius: 12px;
+      padding: 18px 20px;
+      max-width: 46em;
+    }
+    .note p { margin: 0; }
+    .note p + p { margin-top: 8px; }
+
+    footer { padding: 32px 0 56px; color: var(--ink-soft); font-size: 15px; border-top: 1px solid var(--rule); }
+    footer p { margin: 0; }
+    footer p + p { margin-top: 6px; }
+
+    @media (max-width: 860px) {
+      .hero { padding: 48px 0 40px; }
+      .hero-grid, .tool-grid { grid-template-columns: 1fr; gap: 32px; }
+      .tool { padding: 48px 0; }
+      .principles dl { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="who">오종효 (Oh JongHyo), 신경계 중환자실 간호사</p>
+        <h1>중환자실에서 직접 만들어 쓰는 도구들</h1>
+        <p class="lead">근무마다 반복되는 계산과 기록 점검, 근무 배정을 브라우저에서 바로 열리는 도구로 옮겨 왔습니다.</p>
+        <p class="sub">여기 있는 세 가지는 병동에서 실제로 쓰는 도구를 비식별화한 데모입니다. 설치 없이 열리고, 입력한 내용은 지금 쓰는 브라우저에만 저장됩니다.</p>
+      </div>
+      <figure class="flowsheet" aria-hidden="true">
+        <table>
+          <colgroup><col class="label"><col><col><col></colgroup>
+          <tr><th></th><th>D</th><th>E</th><th>N</th></tr>
+          <tr><th class="row">계산</th><td class="Y">Y</td><td class="Y">Y</td><td class="Y">Y</td></tr>
+          <tr><th class="row">기록 점검</th><td class="Y">Y</td><td class="N">N</td><td class="Y">Y</td></tr>
+          <tr><th class="row">근무 배정</th><td class="Y">Y</td><td class="NA">NA</td><td class="Y">Y</td></tr>
+        </table>
+        <figcaption>근무조마다 같은 일을 같은 기준으로 확인하는 것, 세 도구가 함께 노리는 일입니다.</figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <main>
+    <section class="tool" aria-labelledby="t-one">
+      <div class="wrap tool-grid">
+        <div>
+          <h2 id="t-one">중환자실 One</h2>
+          <p class="role">약물 주입 속도부터 인공호흡기 라벨까지, 근무 중 계산을 한 화면에</p>
+          <dl class="facts">
+            <dt>문제</dt>
+            <dd>약물 주입 속도, 만니톨 용량, 인공호흡기 설정값을 따로따로 계산하고, 라벨은 손으로 적었습니다.</dd>
+            <dt>하는 일</dt>
+            <dd>체중과 기준시간을 한 번 넣으면 약물별 주입 속도와 필요량을 함께 계산합니다. 만니톨, Osmol gap, IBW, P/F ratio, Cdynamic 계산과 인공호흡기 라벨 인쇄도 같은 화면에서 처리합니다.</dd>
+            <dt>설계</dt>
+            <dd>권장 범위를 벗어난 용량과 체중이 빠진 계산은 바로 경고하고, 라벨은 미리보기 그대로 인쇄됩니다. 병동에 배포해 지금도 쓰고 있습니다.</dd>
+          </dl>
+          <a class="open" href="tools/one/">One 데모 열기</a>
+          <p class="demo-data">약물 이름, 희석, 농도는 모두 가상 값입니다.</p>
+        </div>
+        <figure class="shot">
+          <img src="assets/one.png" width="1280" height="800" alt="중환자실 One 화면. 체중 60kg을 넣자 예시 약물 A의 용량별 주입 속도와 필요량이 표로 계산되어 있다.">
+        </figure>
+      </div>
+    </section>
+
+    <section class="tool" aria-labelledby="t-monitor">
+      <div class="wrap tool-grid">
+        <div>
+          <h2 id="t-monitor">의무기록 모니터링</h2>
+          <p class="role">엑셀 점검표를 그대로 옮긴, 근무조별 기록 점검 도구</p>
+          <dl class="facts">
+            <dt>문제</dt>
+            <dd>근무조별 기록 점검을 엑셀 표에 직접 입력하느라 칸을 놓치거나 잘못 넣기 쉬웠습니다.</dd>
+            <dt>하는 일</dt>
+            <dd>점검표를 화면으로 옮겨 클릭과 키보드(Y, N, A)로 빠르게 입력하고, 같은 값은 끌어서 채웁니다. 결과는 기존 제출 양식 그대로의 엑셀 파일로 저장하고, 그 파일을 다시 불러와 이어서 씁니다.</dd>
+            <dt>설계</dt>
+            <dd>화면의 칸과 엑셀 양식의 셀 위치를 하나하나 맞춰, 화면과 파일 사이에서 값이 어긋나지 않게 했습니다. 메모는 엑셀 셀 메모로 그대로 오갑니다.</dd>
+          </dl>
+          <a class="open" href="tools/record-monitor/">기록 점검 데모 열기</a>
+          <p class="demo-data">점검 항목은 예시 문구로 바꿨습니다.</p>
+        </div>
+        <figure class="shot">
+          <img src="assets/record-monitor.png" width="1280" height="800" alt="의무기록 모니터링 화면. 환자별 D, E, N 근무조 칸에 Y, N, NA가 색으로 구분되어 입력되어 있다.">
+        </figure>
+      </div>
+    </section>
+
+    <section class="tool" aria-labelledby="t-board">
+      <div class="wrap tool-grid">
+        <div>
+          <h2 id="t-board">환자배정판</h2>
+          <p class="role">번표를 넣으면 주간 근무 배정판이 만들어지는 차지 간호사용 도구</p>
+          <dl class="facts">
+            <dt>문제</dt>
+            <dd>매주 번표를 엑셀 매크로로 정리한 뒤, 배정판에 다시 옮겨 적어 공지했습니다.</dd>
+            <dt>하는 일</dt>
+            <dd>번표를 붙여넣거나 엑셀 파일로 넣으면 근무코드를 정리해 주간 배정판을 만듭니다. 차지와 프리셉터 표시, 이름 끌어서 옮기기, 인쇄와 엑셀 저장까지 처리합니다.</dd>
+            <dt>설계</dt>
+            <dd>번표마다 다른 근무코드를 규칙표로 바꿔 배정판의 Day, Evening, Night에 묶습니다. 손으로 고친 칸은 따로 표시해, 자동 결과와 사람이 바꾼 결과를 구분할 수 있습니다.</dd>
+          </dl>
+          <a class="open" href="tools/assignment-board/">배정판 데모 열기</a>
+          <p class="demo-data">'번표 넣기'에서 <b>예시 번표 넣어보기</b>를 누르면 가상 명단으로 바로 써볼 수 있습니다.</p>
+        </div>
+        <figure class="shot">
+          <img src="assets/assignment-board.png" width="1280" height="800" alt="환자배정판 화면. 11월 첫 주의 날짜별 Day, Evening 근무자 이름이 표로 배정되어 있다.">
+        </figure>
+      </div>
+    </section>
+
+    <section class="principles" aria-labelledby="p-head">
+      <div class="wrap">
+        <h2 id="p-head">세 도구에 공통으로 지킨 것</h2>
+        <dl>
+          <div>
+            <dt>파일 하나로 실행</dt>
+            <dd>병원 PC에 프로그램을 설치할 수 없어서, HTML 파일 하나만 열면 동작하게 만들었습니다.</dd>
+          </div>
+          <div>
+            <dt>데이터는 밖으로 나가지 않음</dt>
+            <dd>외부 서버와 통신하지 않고, 인터넷이 없어도 동작합니다.</dd>
+          </div>
+          <div>
+            <dt>기존 양식을 바꾸지 않음</dt>
+            <dd>현장에서 쓰던 엑셀 양식과 그대로 주고받아, 새 도구를 위해 업무 방식을 바꾸지 않아도 됩니다.</dd>
+          </div>
+          <div>
+            <dt>실수를 막는 장치</dt>
+            <dd>범위 경고, 두 번 눌러야 되는 초기화, 미리보기 후 인쇄, 손으로 고친 칸 표시처럼 잘못된 값이 그대로 쓰이지 않게 했습니다.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="privacy" aria-labelledby="pv-head">
+      <div class="wrap">
+        <h2 id="pv-head">비식별화 안내</h2>
+        <div class="note">
+          <p>병원 이름, 직원과 환자 이름, 병원 고유의 약물 희석 기준과 처방코드, 내부 점검 문구, 파일 속 작성자와 프린터 정보는 모두 지우거나 가상 값으로 바꿨습니다.</p>
+          <p>이 데모는 설계와 동작을 보여주기 위한 것이므로 실제 임상에 사용하지 마세요.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>오종효 (Oh JongHyo)</p>
+      <p>다른 프로젝트: <a href="https://github.com/johnoh354/NurPT">NurPT</a>, 간호 임상 지침을 로컬에서 검색하는 RAG 시스템</p>
+    </div>
+  </footer>
+</body>
+</html>
