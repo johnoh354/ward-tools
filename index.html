@@ -69,26 +69,33 @@
     .lead { margin: 0 0 14px; max-width: 34em; font-size: 18px; }
     .sub { margin: 0; max-width: 36em; color: var(--ink-soft); font-size: 16px; }
 
-    /* signature: a small flowsheet */
-    .flowsheet {
-      margin: 0;
+    /* quick links to the demos */
+    .quick {
       background: var(--sheet);
       border: 1px solid var(--rule-strong);
       border-radius: 14px;
-      padding: 18px 18px 14px;
+      padding: 8px;
     }
-    .flowsheet table { width: 100%; border-collapse: separate; border-spacing: 6px; table-layout: fixed; }
-    .flowsheet col.label { width: 40%; }
-    .flowsheet th { font-size: 13px; font-weight: 700; color: var(--ink-soft); padding: 0 0 2px; }
-    .flowsheet th.row { text-align: left; font-size: 15px; color: var(--ink); white-space: nowrap; padding-right: 6px; }
-    .flowsheet td {
-      height: 40px; text-align: center; border-radius: 8px;
-      font-weight: 800; font-size: 14px;
+    .quick-title { margin: 10px 14px 4px; font-size: 14px; font-weight: 700; color: var(--ink-soft); }
+    .quick-link {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 10px;
+      color: var(--ink);
+      text-decoration: none;
     }
-    .flowsheet .Y { background: var(--y-bg); color: var(--y-fg); }
-    .flowsheet .N { background: var(--n-bg); color: var(--n-fg); }
-    .flowsheet .NA { background: var(--na-bg); color: var(--na-fg); }
-    .flowsheet figcaption { margin: 8px 6px 0; font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+    .quick-link + .quick-link { border-top: 1px solid var(--rule); }
+    .quick-link:hover { background: var(--teal-soft); }
+    .quick-link:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+    .q-name { display: block; font-size: 18px; font-weight: 800; line-height: 1.4; }
+    .q-desc { display: block; font-size: 15px; color: var(--ink-soft); line-height: 1.5; }
+    .q-open {
+      font-size: 14px; font-weight: 700; color: var(--teal);
+      border: 1px solid var(--rule-strong); border-radius: 999px; padding: 4px 12px;
+    }
 
     /* tools */
     .tool { padding: 64px 0; border-bottom: 1px solid var(--rule); }
@@ -160,16 +167,21 @@
         <p class="lead">근무마다 반복되는 계산과 기록 점검, 근무 배정을 브라우저에서 바로 열리는 도구로 옮겨 왔습니다.</p>
         <p class="sub">여기 있는 세 가지는 병동에서 실제로 쓰는 도구를 비식별화한 데모입니다. 설치 없이 열리고, 입력한 내용은 지금 쓰는 브라우저에만 저장됩니다.</p>
       </div>
-      <figure class="flowsheet" aria-hidden="true">
-        <table>
-          <colgroup><col class="label"><col><col><col></colgroup>
-          <tr><th></th><th>D</th><th>E</th><th>N</th></tr>
-          <tr><th class="row">계산</th><td class="Y">Y</td><td class="Y">Y</td><td class="Y">Y</td></tr>
-          <tr><th class="row">기록 점검</th><td class="Y">Y</td><td class="N">N</td><td class="Y">Y</td></tr>
-          <tr><th class="row">근무 배정</th><td class="Y">Y</td><td class="NA">NA</td><td class="Y">Y</td></tr>
-        </table>
-        <figcaption>근무조마다 같은 일을 같은 기준으로 확인하는 것, 세 도구가 함께 노리는 일입니다.</figcaption>
-      </figure>
+      <nav class="quick" aria-label="데모 바로가기">
+        <p class="quick-title">데모 바로 열기</p>
+        <a class="quick-link" href="tools/one/">
+          <span><span class="q-name">중환자실 One</span><span class="q-desc">근무 중 계산과 라벨 인쇄</span></span>
+          <span class="q-open">열기</span>
+        </a>
+        <a class="quick-link" href="tools/record-monitor/">
+          <span><span class="q-name">의무기록 모니터링</span><span class="q-desc">근무조별 기록 점검</span></span>
+          <span class="q-open">열기</span>
+        </a>
+        <a class="quick-link" href="tools/assignment-board/">
+          <span><span class="q-name">환자배정판</span><span class="q-desc">번표로 만드는 주간 근무 배정</span></span>
+          <span class="q-open">열기</span>
+        </a>
+      </nav>
     </div>
   </header>
 
